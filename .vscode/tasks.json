@@ -1,0 +1,28 @@
+{
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "C/C++: g++.exe build active file",
+            "command": "C:/msys64/mingw32/bin/gcc.exe",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-L${workspaceFolder}",
+                "-g",
+                "${workspaceFolder}\\main.c",
+                "-o",
+                "${workspaceFolder}\\dev\\prog.exe",
+                //"-lCH341DLL"
+                //"-std=c++98"
+            ],
+            "options": {
+                "cwd": "C:/msys64/mingw32/bin"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "detail": "compiler: C:/msys64/mingw32/bin/gcc.exe"
+        }
+    ],
+    "version": "2.0.0"
+}
