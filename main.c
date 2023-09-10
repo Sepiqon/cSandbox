@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 const char* BASE64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 int roundUp(int val, int dev) {
     int temp = val / dev;
@@ -7,7 +8,8 @@ int roundUp(int val, int dev) {
     return temp;
 }
 
-int base64(const char* str) {
+char* base64(const char* str) {
+    if (!(*str)) return 0;
     char* adressStart = (char*)str;
     unsigned int sizeText = 0, stay, element = 0, currentGroup, groups;
     unsigned char firstByte, secondByte, thirdByte, aByte, bByte, cByte, dByte;
@@ -17,23 +19,28 @@ int base64(const char* str) {
     }
     stay = sizeText;
     groups = roundUp(sizeText, 3);
+
+
+    char* temp = malloc((groups * 4) + 1);
+    temp[groups * 4] = 0;
+
     tempOutput[4] = 0;
-    printf("\nBASE64: ");
     for (currentGroup = 0; currentGroup < (groups - 1); currentGroup++) {
         firstByte = *(adressStart + (element));
         secondByte = *(adressStart + (element + 1));
         thirdByte = *(adressStart + (element + 2));
 
         aByte = (firstByte) >> 2;
-        bByte = (((firstByte << 6) % 256) >> 2) + ((secondByte) >> 4);
-        cByte = (((secondByte << 4) % 256) >> 2) + (thirdByte >> 6);
-        dByte = ((thirdByte << 2) % 256) >> 2;
+        bByte = (((unsigned char)(firstByte << 6)) >> 2) + ((secondByte) >> 4);
+        cByte = (((unsigned char)(secondByte << 4)) >> 2) + (thirdByte >> 6);
+        dByte = ((unsigned char)(thirdByte << 2)) >> 2;
+
 
         tempOutput[0] = BASE64Chars[aByte];
         tempOutput[1] = BASE64Chars[bByte];
         tempOutput[2] = BASE64Chars[cByte];
         tempOutput[3] = BASE64Chars[dByte];
-        printf("%s", tempOutput);
+        ((int*)temp)[currentGroup] = ((int*)tempOutput)[0];
         element += 3;
         stay -= 3;
     }
@@ -54,26 +61,23 @@ int base64(const char* str) {
         tempOutput[3] = 61;
     }
     aByte = (firstByte) >> 2;
-    bByte = (((firstByte << 6) % 256) >> 2) + ((secondByte) >> 4);
+    bByte = (((unsigned char)(firstByte << 6)) >> 2) + ((secondByte) >> 4);
     tempOutput[0] = BASE64Chars[aByte];
     tempOutput[1] = BASE64Chars[bByte];
     if (!tempOutput[2]) {
-        cByte = (((secondByte << 4) % 256) >> 2) + (thirdByte >> 6);
+        cByte = (((unsigned char)(secondByte << 4)) >> 2) + (thirdByte >> 6);
         tempOutput[2] = BASE64Chars[cByte];
     }
     if (!tempOutput[3]) {
-        dByte = ((thirdByte << 2) % 256) >> 2;
+        dByte = ((unsigned char)(thirdByte << 2)) >> 2;
         tempOutput[3] = BASE64Chars[dByte];
     }
-    printf("%s", tempOutput);
-
-    printf("\n");
+    ((int*)temp)[groups - 1] = ((int*)tempOutput)[0];
+    return temp;
 }
 int main(int argc, char* argv[]) {
-    const char* const text = "";
+    const char* const text = "SEKRET HAHA";
 
-    //U0nEmA==
-    printf("Teskt: \"%s\" został zaszyfrowany:", text);
-    base64(text);
+    printf("Teskt: \"%s\" został zaszyfrowany na: \"%s\"", text, base64(text));
     return 0;
 }
