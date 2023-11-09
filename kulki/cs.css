@@ -1,0 +1,32 @@
+   #circleblue {
+       width: 48px;
+       height: 48px;
+       -webkit-border-radius: 25px;
+       -moz-border-radius: 25px;
+       border-radius: 25px;
+       background: blue;
+       margin: 0px;
+    position: absolute;
+    opacity: 50%;
+            border: 1px solid #000000;
+   }
+          #circlered {
+              width: 48px;
+              height: 48px;
+              -webkit-border-radius: 25px;
+              -moz-border-radius: 25px;
+              border-radius: 25px;
+              background: red;
+              margin: 0px;
+              position: absolute;
+              opacity: 50%;
+              border: 1px solid #000000;
+          }
+
+#kwadrat {
+    width: 150px;
+    height: 300px;
+    border: 4px solid #000000;
+    background-color: #f7f7f7;
+    position: absolute;
+}
