@@ -5,13 +5,13 @@
       "name": "gcc.exe - Build and debug active file",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}\\dev\\prog.exe",
+      "program": "${workspaceFolder}/dev/prog",
       "args": [],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
       "MIMode": "gdb",
-      "miDebuggerPath": "C:\\msys64\\mingw32\\bin\\gdb.exe",
+      "miDebuggerPath": "/usr/bin/gdb",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",
@@ -28,9 +28,9 @@
       "request": "launch",
       "args": [],
       "stopAtEntry": false,
-      "externalConsole": true,
-      "cwd": "c:/Users/RyZen/Desktop/VSC-Projects/cSandbox",
-      "program": "c:/Users/RyZen/Desktop/VSC-Projects/cSandbox/build/Debug/outDebug",
+      "externalConsole": false,
+      "cwd": "/home/sepiqon/VS Code/cSandbox",
+      "program": "/home/sepiqon/VS Code/cSandbox/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
