@@ -9,18 +9,24 @@ int main(int argc, char *argv[])
     double a, b, c, delta;
 
     // Zapytanie o a, b i c
+    printf("\na(x^2) + bc + c = 0");
     printf("\nPodaj A: ");
     scanf("%lA", &a);
-    printf("\nPodaj B: ");
+    printf("Podaj B: ");
     scanf("%lA", &b);
-    printf("\nPodaj C: ");
+    printf("Podaj C: ");
     scanf("%lA", &c);
 
     // Wydrukowanie funkcji
 
-    printf("%s", (a == 1) ? "(x^2)" : ((a == -1) ? "-(x^2)" : (a ? strcat(numToString(&a), "(x^2)") : "")));
+    if (a && a != -1 && a != 1)
+        printf("%s(x^2)", numToString(&a));
+    if (a == -1)
+        printf("-(x^2)");
+    if (a == 1)
+        printf("(x^2)");
 
-    if (b > 0)
+    if (b > 0 && a)
     {
         printf("+");
     }
@@ -34,13 +40,14 @@ int main(int argc, char *argv[])
     }
     if (b)
         printf("x");
-    if (c > 0)
+    if (c > 0 && (a || b))
     {
         printf("+");
     }
-    if (c)
+    if (c && (a || b))
         printf(numToString(&c));
-    printf("=0\n");
+    if (a || b)
+        printf("=0\n");
 
     // Liczenie delty
     delta = (b * b) - 4 * a * c;
@@ -53,7 +60,7 @@ int main(int argc, char *argv[])
         return 0;
     }
     // delta rowna 0
-    else if (delta == 0)
+    else if (delta == 0 && a)
     {
         // policzenie jednego x
         double x = (-b) / (2 * a);
@@ -61,7 +68,7 @@ int main(int argc, char *argv[])
         printf("\n x = %s", numToString(&x));
     }
     // delta dodatnia
-    else if (delta > 0)
+    else if (delta > 0 && a)
     {
         // spierwiastkowanie delty
         long double x1, x2, pierwiastek = pow(delta, 0.5), bd = b, ad = a;
@@ -75,6 +82,21 @@ int main(int argc, char *argv[])
         x2d = skoryguj(x2d);
         // wyswietlenie uzytkownikowi
         printf("\n x1 = %s | x2 = %s", numToString(&x1d), numToString(&x2d));
+    }
+    // funkcja liniowa
+    else if (!a && b)
+    {
+        long double cd = c, bc = b, x;
+        double x1;
+        x = -(cd / bc);
+        x1 = x;
+        // wyswietlenie uzytkownikowi
+        printf("\n x = %s", numToString(&x1));
+    }
+    // funkcja stala
+    else if (!a && !b)
+    {
+        printf("\nf(x) = %s", numToString(&c));
     }
     // zatrzymanie programu
     getchar();
