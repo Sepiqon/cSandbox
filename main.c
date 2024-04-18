@@ -56,16 +56,31 @@ int main(int argc, char *argv[])
     if (delta < 0)
     {
         // wyswietlenie uzytkownikowi
-        printf("\nRownanie nie ma rozwiazan");
-        return 0;
+        printf("\nRownanie nie ma rozwiazan\n");
+        // return 0;
     }
     // delta rowna 0
     else if (delta == 0 && a)
     {
         // policzenie jednego x
-        double x = (-b) / (2 * a);
+        long double x = (-b) / (2 * a);
+        double xd = x;
+        //
+        double a1 = skoryguj(a * pow(x, 2));
+        double a2 = skoryguj(b * x);
+        double a3 = c;
+        BOOLEAN a2b = a2 > 0;
+        BOOLEAN a3b = a3 > 0;
+        // x
+        printf("\n%s", numToString(&a1));
+        if (a2b)
+            printf("+");
+        printf("%s", numToString(&a2));
+        if (a3b)
+            printf("+");
+        printf("%s=0\n", numToString(&a3));
         // wyswietlenie uzytkownikowi
-        printf("\n x = %s", numToString(&x));
+        printf("x = %s", numToString(&xd));
     }
     // delta dodatnia
     else if (delta > 0 && a)
@@ -80,8 +95,33 @@ int main(int argc, char *argv[])
         // usuniecie niedoskonalosci licz zmiennoprzecinkowych
         x1d = skoryguj(x1d);
         x2d = skoryguj(x2d);
-        // wyswietlenie uzytkownikowi
-        printf("\n x1 = %s | x2 = %s", numToString(&x1d), numToString(&x2d));
+
+        double a1 = skoryguj(a * pow(x1d, 2));
+        double a2 = skoryguj(b * x1d);
+        double a1_1 = skoryguj(a * pow(x2d, 2));
+        double a2_1 = skoryguj(b * x2d);
+        double a3 = c;
+        BOOLEAN a2b = a2 >= 0;
+        BOOLEAN a3b = a3 >= 0;
+        BOOLEAN a2b_1 = a2_1 >= 0;
+        // x1
+        printf("\n%s", numToString(&a1));
+        if (a2b)
+            printf("+");
+        printf("%s", numToString(&a2));
+        if (a3b)
+            printf("+");
+        printf("%s=0\n", numToString(&a3));
+        // x2
+        printf("%s", numToString(&a1_1));
+        if (a2b_1)
+            printf("+");
+        printf("%s", numToString(&a2_1));
+        if (a3b)
+            printf("+");
+        printf("%s=0\n", numToString(&a3));
+        //  wyswietlenie uzytkownikowi
+        printf("x1 = %s | x2 = %s", numToString(&x1d), numToString(&x2d));
     }
     // funkcja liniowa
     else if (!a && b)
@@ -100,6 +140,7 @@ int main(int argc, char *argv[])
     }
     // zatrzymanie programu
     getchar();
+    getchar();
     return 0;
 }
 
@@ -107,6 +148,8 @@ char *const numToString(double *num)
 {
     // po przecinku np. 9,999 -> 3
     char poPrzecinku = poPrzecinkuVoid(num);
+    if (poPrzecinku > 15)
+        poPrzecinku = 15;
     // przed przecinkiem np. 999,9 -> 3
     char przedPrzecinkiem = przedPrzecinkiemVoid(num);
     // liczby zawierające 0 na poczatku np. -0,25 oraz 0.25
@@ -114,7 +157,12 @@ char *const numToString(double *num)
     // liczby ze znakiem '-' na poczatku
     BOOLEAN ujemne = ((*num) < 0);
     // wszytskie cyfry liczby bez przecinka
-    long long liczba = ceil(bezw(*num) * (pow(10, poPrzecinku)));
+    long long liczba = round(bezw(*num) * (pow(10, poPrzecinku)));
+    if ((!(liczba % 10)) && poPrzecinku > 0)
+    {
+        poPrzecinku--;
+        liczba /= 10;
+    }
     // ilosc znakow po wypisaniu np. "-0,25" => 5
     char iloscZnakow = poPrzecinku + przedPrzecinkiem + (poPrzecinku ? 1 : 0) + zero + ujemne;
     // wyjsciowy ciag znakow

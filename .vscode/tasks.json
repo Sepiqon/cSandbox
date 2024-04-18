@@ -12,7 +12,7 @@
                 "-o",
                 "${workspaceFolder}\\dev\\prog.exe",
                 //"-lCH341DLL"
-                //"-std=c++98"
+                //"-std=c99"
             ],
             "options": {
                 "cwd": "C:/msys64/mingw32/bin"
