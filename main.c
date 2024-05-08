@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include <stdlib.h
-#include <time.h>
+#include <sys/time.h>
+#include <stdlib.h>
 const char *BASE64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 int roundUp(int val, int dev)
 {
@@ -48,7 +48,6 @@ char *base64(const char *str)
         element += 3;
         stay -= 3;
     }
-    // LAST GROUP
     firstByte = *(adressStart + (element));
     tempOutput[2] = 0;
     tempOutput[3] = 0;
@@ -89,8 +88,19 @@ char *base64(const char *str)
 }
 int main(int argc, char *argv[])
 {
-    const char *const text = "CZEŚĆ";
 
-    printf("Teskt: \"%s\" został zaszyfrowany na: \"%s\"", text, base64(text));
+    char *out;
+    const char *const text = "Text do szyfru";
+    struct timeval start, end;
+
+    gettimeofday(&start, NULL);
+    out = base64(text);
+    gettimeofday(&end, NULL);
+    unsigned long time_in_micross = 1000000 * start.tv_sec + start.tv_usec;
+    unsigned long time_in_microse = 1000000 * end.tv_sec + end.tv_usec;
+    unsigned long di = time_in_microse - time_in_micross;
+    printf("Total time taken by CPU: %ld\n", di);
+
+    printf("Teskt: \"%s\" został zaszyfrowany na: \"%s\"", text, out);
     return 0;
 }
