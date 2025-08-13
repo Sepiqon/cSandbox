@@ -37,7 +37,8 @@
   "C_Cpp_Runner.showCompilationTime": false,
   "files.associations": {
     "CH341DLL.H": "cpp",
-    "windows.h": "c"
+    "windows.h": "c",
+    "cmath": "c"
   },
   "C_Cpp_Runner.msvcWarnings": [
     "/W4",
