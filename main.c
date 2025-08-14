@@ -107,7 +107,6 @@ int main(int argc, char *argv[])
         double time;
         unsigned char state[8];
     } merged_transition_t;
-
     // wskaźniki bieżącej pozycji w listach kanałów
     list_t *cur_ptr[8];
     for (int ch = 0; ch < 8; ch++)
@@ -178,20 +177,49 @@ int main(int argc, char *argv[])
         cur_ptr[min_channel] = cur_ptr[min_channel]->next;
         elements[min_channel]--;
     }
+    for (size_t i = 0; i < (sizetablice + 1); i++)
+    {
+        list_t *next = data_out->next;
+        free(data_out->value);
+        free(data_out);
+        data_out = next; // na końcu przypisanie
+    }
+    sizetablice = 0;
 
-    // wypisanie nowej listy
+    // zapis do pliku
+    FILE *fp = fopen("output.txt", "w");
+    if (!fp)
+    {
+        perror("output.txt");
+        return 1;
+    }
+
     merged_cur = merged_head;
     for (size_t i = 0; i < merged_count; i++)
     {
         merged_transition_t *mt = (merged_transition_t *)merged_cur->value;
-        printf("%.5f", mt->time * 1000000); // w mikrosekundach
+        fprintf(fp, "%.5f", mt->time * 1000000); // mikrosekundy
         for (int ch = 0; ch < 8; ch++)
         {
-            if (elements[ch] >= 0) // kanały pominięte będą mieć same zera
-                printf("|%d", mt->state[ch]);
+            fprintf(fp, "|%d", mt->state[ch]);
         }
-        printf("\n");
+        fprintf(fp, "\n");
         merged_cur = merged_cur->next;
     }
+
+    fclose(fp);
+    // // wypisanie nowej listy
+    // merged_cur = merged_head;
+    // for (size_t i = 0; i < merged_count; i++)
+    // {
+    //     merged_transition_t *mt = (merged_transition_t *)merged_cur->value;
+    //     printf("%.5f", mt->time * 1000000); // w mikrosekundach
+    //     for (int ch = 0; ch < 8; ch++)
+    //     {
+    //         printf("|%d", mt->state[ch]);
+    //     }
+    //     printf("\n");
+    //     merged_cur = merged_cur->next;
+    // }
     system("pause");
 }
