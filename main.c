@@ -1,5 +1,7 @@
 #include <windows.h>
 #include <stdio.h>
+#include <locale.h>
+
 #pragma pack(push, 1)
 
 typedef struct header
